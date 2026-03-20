@@ -1,6 +1,6 @@
 # IOC Table — Ursnif Infection (2020-02-24)
 **Source PCAP:** malware-traffic-analysis.net/2020/02/24
-**Analyst:** [Your Name] | **Date:** 2025-03-20
+**Analyst:** Himanshu Kumar Modi | **Date:** 2025-03-20
 
 ---
 
