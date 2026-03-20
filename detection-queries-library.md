@@ -115,13 +115,3 @@ index=network http.request.method=GET
 **Logic:** Catches archive downloads from external IPs with suspicious naming conventions. Pattern list (`grabb`, `drop`, `stage`, `inject`) is expandable as new malware families are encountered.
 
 ---
-
-## How to Use This File
-
-- After every lab session, add new rules to this file following the same format
-- Each rule must have: source lab, MITRE technique, the triggering observation, SPL query, and logic explanation
-- This file is your living detection playbook — bring it to interviews
-
----
-
-*Part of cybersec-portfolio — updated after every lab session*
