@@ -24,7 +24,7 @@
 | Malware Analysis | PEStudio, ANY.RUN, REMnux, static + dynamic analysis |
 | Threat Intel | MITRE ATT&CK mapping, ATT&CK Navigator, VirusTotal |
 | Incident Response | NIST SP 800-61, IR playbooks, phishing analysis |
-| Languages | Python, PowerShell (basic) |
+| Languages | Python, Bash (basic), PowerShell (basic) |
 
 ---
 
