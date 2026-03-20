@@ -33,7 +33,7 @@
 ### 01 — Network Forensics: Ursnif Malware Investigation
 **Status:** ✅ Complete
 Analyzed a real Ursnif/Gozi banking trojan PCAP. Reconstructed full infection chain from macro execution → payload download → C2 beaconing. Extracted 10 IOCs and wrote 5 Splunk detection rules.
-→ [report.md](./01-network-forensics/report.md)
+→ [report.md](01-network-forensics\01_report.md)
 
 ### 02 — Splunk BOTS v1: APT Investigation
 **Status:** 🔄 In Progress (Week 2–3)
