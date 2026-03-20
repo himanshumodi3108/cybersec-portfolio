@@ -48,7 +48,7 @@ A Windows host (10.2.24.101) was compromised via a malicious Excel document cont
 [Stage 6] Persistence → Suspected registry autostart (DLL drop pattern consistent
           with Ursnif HKCU\Software registry injection)
 ```
-![Infection Chain](<WhatsApp Image 2026-03-20 at 23.22.37.jpeg>)
+![Infection Chain](<Day 1_Infection Chain.jpeg>)
 ---
 
 ## 4. Protocol Analysis
