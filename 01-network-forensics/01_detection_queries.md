@@ -1,7 +1,6 @@
 # Detection Queries — Ursnif C2 & Payload Delivery
 **Case:** 2020-02-24 Ursnif Infection
 **Analyst:** Himanshu Kumar Modi | **Date:** 2025-03-20
-
 **Added to master library:** detection-queries-library.md
 
 ---
