@@ -79,7 +79,7 @@ A Windows host (`DESKTOP-CANDLES`, 10.11.9.102) was compromised by **Trickbot**,
            POST /tar2/.../83/ → 51.81.112.135 (637 bytes — repeat form data)
            Pkt #2141 · 21:35:20 UTC → 200 OK — final confirmation
 
-![Infection Chain](<Day 2_Trickbot_infection_chain.svg>)
+![Trickbot Infection Chain](<Day 2_Trickbot_infection_chain.png>)
 ```
 
 > **Exfiltration window:** 96.3 seconds — from Pkt #1592 (21:33:44) to Pkt #2141 (21:35:20 UTC)
