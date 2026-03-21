@@ -3,7 +3,7 @@
 **Date of Analysis:** 2025-03-20
 **Analyst:** Himanshu Kumar Modi
 **Exercise Source:** malware-traffic-analysis.net — 2020-02-24
-**PCAP File:** 2020-02-24-traffic-analysis-exercise.pcap
+**PCAP File:** 2020-02-24-Ursnif-infection-from-Italian-XLS-macro.pcap
 **Certifications:** Google Cybersecurity Certificate | ISC2 CC
 
 ---
