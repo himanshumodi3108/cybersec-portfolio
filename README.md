@@ -54,3 +54,20 @@ A growing collection of Splunk SPL detection rules built from real lab investiga
 | Week 1 | 10 rules | Ursnif PCAP (5) + Trickbot PCAP (5) — beaconing, credential exfil, port evasion, User-Agent masquerade |
 
 ---
+
+## Weekly Progress Log
+
+| Week | Focus | Status |
+|---|---|---|
+| Week 1 | Wireshark — Analyst-level PCAP investigation | ✅ Complete — 2 PCAPs, 10 IOCs, 10 detection rules |
+| Week 2 | Splunk SPL + BOTS v1 start | 🔜 Starts Day 8 |
+| Week 3 | BOTS v1 finish + Windows Forensics | 🔜 Upcoming |
+| Week 4 | Memory Forensics — Volatility 3 | 🔜 Upcoming |
+| Week 5 | Malware Analysis — Static + Dynamic | 🔜 Upcoming |
+| Week 6 | BTL1 Prep + Phishing Analysis | 🔜 Upcoming |
+| Week 7 | BTL1 Exam + Write-ups | 🔜 Upcoming |
+| Week 8 | Applications | 🔜 Upcoming |
+
+---
+
+*Updated weekly. All investigations use real malware datasets and industry-standard tools.*
