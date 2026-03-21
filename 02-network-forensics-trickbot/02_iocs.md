@@ -1,6 +1,6 @@
 # IOC Table — Trickbot Infostealer (2020-11-09)
 **Source PCAP:** malware-traffic-analysis.net/2020/11/09
-**Analyst:** Himanshu Kumar Modi | **Date:** 2025-03-22
+**Analyst:** Himanshu Kumar Modi | **Date:** 2025-03-21
 
 ---
 

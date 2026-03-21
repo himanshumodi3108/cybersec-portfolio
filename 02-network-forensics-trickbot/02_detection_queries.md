@@ -1,6 +1,6 @@
 # Detection Queries — Trickbot C2 & Credential Exfiltration
 **Case:** 2020-11-09 Trickbot Infection
-**Analyst:** Himanshu Kumar Modi | **Date:** 2025-03-22
+**Analyst:** Himanshu Kumar Modi | **Date:** 2025-03-21
 
 ---
 

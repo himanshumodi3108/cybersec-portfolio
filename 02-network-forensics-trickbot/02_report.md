@@ -1,6 +1,6 @@
 # Network Forensics Investigation Report
 ## Case: Trickbot Infostealer — Credential Exfiltration
-**Date of Analysis:** 2025-03-22
+**Date of Analysis:** 2025-03-21
 **Analyst:** Himanshu Kumar Modi
 **Exercise Source:** malware-traffic-analysis.net — 2020-11-09
 **PCAP File:** 2020-11-09-Trickbot-gtag-tar2-infection-traffic.pcap
