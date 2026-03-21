@@ -1,7 +1,7 @@
 # Cybersecurity Portfolio — SOC Analyst / DFIR
 
-**[Your Name]**
-📍 Kolkata, India | 🔗 [LinkedIn URL] | 💻 [GitHub URL]
+**Himanshu Kumar Modi**
+📍 Mumbai, India | 🔗 [LinkedIn Profile](www.linkedin.com/in/himanshu-kumar-modi-063b88239) | 💻 [GitHub Profile](https://github.com/himanshumodi3108)
 
 ---
 
@@ -26,7 +26,7 @@
 | Malware Analysis | PEStudio, ANY.RUN, REMnux, static + dynamic analysis |
 | Threat Intel | MITRE ATT&CK mapping, ATT&CK Navigator, VirusTotal |
 | Incident Response | NIST SP 800-61, IR playbooks, phishing analysis |
-| Languages | Python, Bash, PowerShell (basic) |
+| Languages | Python, Bash(Basic), PowerShell (basic) |
 
 ---
 
@@ -37,17 +37,10 @@
 Analyzed a real Ursnif/Gozi banking trojan PCAP. Reconstructed full infection chain from macro execution → payload download → C2 beaconing. Extracted 10 IOCs and wrote 5 Splunk detection rules.
 → [report.md](01-network-forensics/01_report.md)
 
-### 02 — Splunk BOTS v1: APT Investigation
-**Status:** 🔄 In Progress (Week 2–3)
-
-### 03 — Windows Disk + Memory Forensics
-**Status:** 🔄 Upcoming (Week 3–4)
-
-### 04 — Memory Forensics: Volatility 3
-**Status:** 🔄 Upcoming (Week 4)
-
-### 05 — Malware Triage: AgentTesla RAT
-**Status:** 🔄 Upcoming (Week 5)
+### 02 — Network Forensics: Trickbot Infostealer
+**Status:** ✅ Complete
+Analyzed Trickbot infostealer PCAP. Caught live credential exfiltration — 5 compromised accounts (Google, Facebook, Yahoo) in plaintext POST body. Identified non-standard port 447 C2 evasion, fake IE7 User-Agent, and bot ID fingerprinting. Wrote 5 detection rules including zero-false-positive User-Agent signature.
+→ [report.md](02-network-forensics-trickbot/02_report.md)
 
 ---
 
@@ -61,25 +54,3 @@ A growing collection of Splunk SPL detection rules built from real lab investiga
 | Week 1 | 10 rules | Ursnif PCAP (5) + Trickbot PCAP (5) — beaconing, credential exfil, port evasion, User-Agent masquerade |
 
 ---
-
-## Weekly Progress Log
-
-| Week | Focus | Status |
-|---|---|---|
-| Week 1 | Wireshark — Analyst-level PCAP investigation | ✅ Days 1&2 Complete |
-| Week 2 | Splunk install + SPL basics + BOTS v1 start | 🔜 Starts Day 8 |
-| Week 3 | BOTS v1 finish + Windows Forensics | 🔜 Upcoming |
-| Week 4 | Memory Forensics — Volatility 3 | 🔜 Upcoming |
-| Week 5 | Malware Analysis — Static + Dynamic | 🔜 Upcoming |
-| Week 6 | BTL1 Prep + Phishing Analysis | 🔜 Upcoming |
-| Week 7 | BTL1 Exam + Write-ups | 🔜 Upcoming |
-| Week 8 | Applications | 🔜 Upcoming |
-
----
-
-*Updated weekly. All investigations use real malware datasets and industry-standard tools.*
-
-### 02 — Network Forensics: Trickbot Infostealer
-**Status:** ✅ Complete
-Analyzed Trickbot infostealer PCAP. Caught live credential exfiltration — 5 compromised accounts (Google, Facebook, Yahoo) in plaintext POST body. Identified non-standard port 447 C2 evasion, fake IE7 User-Agent, and bot ID fingerprinting. Wrote 5 detection rules including zero-false-positive User-Agent signature.
-→ [report.md](02-network-forensics-trickbot/02_report.md)
