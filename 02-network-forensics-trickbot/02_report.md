@@ -314,4 +314,4 @@ index=network http.request.method=POST
 
 ---
 *Report generated as part of SOC Analyst / DFIR portfolio development.*
-*Analyst: [Your Name] | [LinkedIn URL]*
+*Analyst: Himanshu Kumar Modi | [LinkedIn Profile](https://www.linkedin.com/in/himanshu-kumar-modi-063b88239/)*
