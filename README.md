@@ -1,4 +1,6 @@
-# Cybersecurity Portfolio — SOC Analyst / DFIR
+# SOC Analyst | Digital Forensics | Threat Detection | Incident Response
+
+> Hands-on cybersecurity portfolio built from real malware investigations, live credential theft analysis, and SIEM detection engineering. Updated weekly.
 
 **Himanshu Kumar Modi**
 📍 Mumbai, India | 🔗 [LinkedIn Profile](www.linkedin.com/in/himanshu-kumar-modi-063b88239) | 💻 [GitHub Profile](https://github.com/himanshumodi3108)
@@ -42,6 +44,57 @@ Analyzed a real Ursnif/Gozi banking trojan PCAP. Reconstructed full infection ch
 Analyzed Trickbot infostealer PCAP. Caught live credential exfiltration — 5 compromised accounts (Google, Facebook, Yahoo) in plaintext POST body. Identified non-standard port 447 C2 evasion, fake IE7 User-Agent, and bot ID fingerprinting. Wrote 5 detection rules including zero-false-positive User-Agent signature.
 → [report.md](02-network-forensics-trickbot/02_report.md)
 
+---
+
+## 💼 Portfolio Highlights
+
+- Investigated real-world malware PCAPs and reconstructed full infection chains
+- Detected live credential exfiltration via HTTP POST stream analysis (Trickbot)
+- Extracted and documented IOCs across 2 malware families — 10 total indicators
+- Mapped attacker behavior to MITRE ATT&CK framework across 9 technique IDs
+- Wrote 10 Splunk SPL detection rules from observed malware behaviors
+- Identified evasion techniques: payload disguise, non-standard ports, User-Agent spoofing
+
+---
+
+## 🧰 Tools Proficiency
+
+| Tool | Level | Used For |
+|---|---|---|
+| Wireshark | Advanced | PCAP analysis, IOC extraction, stream following, beaconing detection |
+| Splunk SPL | Intermediate | Log correlation, threat hunting, detection rule writing, BOTS dataset |
+| MITRE ATT&CK | Intermediate | TTP mapping, Navigator layer building, detection alignment |
+| Volatility 3 | Beginner | Memory forensics — pslist, netscan, malfind, cmdline |
+| Autopsy | Beginner | Disk forensics, deleted file recovery, artifact analysis |
+| EZ Tools | Beginner | Registry Explorer, PECmd, JLECmd — Windows artifact parsing |
+| PEStudio | Beginner | Static malware analysis — PE headers, imports, entropy |
+| ANY.RUN | Beginner | Dynamic malware sandboxing |
+| VirusTotal | Intermediate | Hash/domain/IP reputation, malware family identification |
+| Nmap | Intermediate | Port scanning, OS fingerprinting, network enumeration |
+| Metasploit | Basic | Exploitation framework, payload delivery (academic) |
+
+---
+
+## 🔍 Detection Strategy
+
+Every investigation in this portfolio follows a three-step detection methodology:
+
+1. **Find** — identify the attack behavior using forensic tools
+2. **Map** — assign MITRE ATT&CK technique IDs to each behavior
+3. **Detect** — write the Splunk SPL rule that would catch it in production
+
+This approach ensures every project produces actionable detection logic, not just observations.
+
+---
+
+## 🎯 SOC Analyst Focus Areas
+```
+Credential Theft Detection    →  HTTP POST analysis, browser data exfiltration monitoring
+C2 Communication Detection    →  Beaconing regularity, non-standard ports, SNI monitoring  
+Payload Delivery Detection    →  File extension mismatch, chunked downloads, archive names
+Evasion Technique Detection   →  User-Agent anomalies, port 443 HTTP, DGA patterns
+Incident Response             →  NIST SP 800-61 lifecycle, containment actions, IOC blocking
+```
 ---
 
 ## Detection Query Library

@@ -307,12 +307,53 @@ index=network http.request.method=POST
 
 ---
 
-## 12. References
+## 12. Attack Narrative
+
+The victim DESKTOP-CANDLES was compromised by Trickbot — one of the most prolific banking trojans and infostealers ever documented in production SOC environments. The infection method was not captured in this PCAP (the machine was already compromised), but Trickbot is overwhelmingly distributed via phishing emails containing malicious Word or Excel attachments.
+
+Once installed, Trickbot immediately began working methodically. First, it checked its own public IP via `icanhazip.com` — confirming internet connectivity and ruling out sandbox environments which often have unusual IP ranges. It then established encrypted C2 channels to two separate servers, deliberately using port 447 on the secondary channel to evade firewalls configured to inspect only port 443.
+
+The credential harvesting phase was efficient and complete: within 96 seconds, Trickbot extracted every saved password from Chrome, collected form data and PII, and transmitted everything to the attacker's server across 5 confirmed POST requests — each acknowledged with HTTP 200 OK. The attacker used port 443 for exfiltration but deliberately sent plain HTTP (not HTTPS), keeping the stolen data unencrypted for easier server-side parsing while exploiting the port number to evade detection.
+
+By the time this PCAP was captured, the attacker had full access to 5 accounts across Google, Facebook, and Yahoo — and a persistent C2 channel for follow-on activity.
+
+---
+
+## 13. Impact Assessment
+
+| Impact Category | Detail |
+|---|---|
+| Confidentiality | Critical — 5 accounts fully compromised with plaintext passwords confirmed received |
+| Financial risk | Critical — Google and Facebook accounts exposed; Yahoo email used for account recovery |
+| Identity theft risk | High — full name, email, zipcode, user ID, billing info collected |
+| Account takeover | Immediate — attacker has confirmed credentials for 3 Google accounts |
+| Lateral movement | High — compromised machine maintains persistent C2; could be used for internal pivoting |
+| Persistence | High — Trickbot survives reboots via registry injection |
+
+---
+
+## 14. Recommended Actions
+
+| Priority | Action |
+|---|---|
+| P0 | Force immediate password reset on all 5 compromised accounts |
+| P0 | Enable MFA on Google, Facebook, and Yahoo accounts immediately |
+| P0 | Isolate DESKTOP-CANDLES (10.11.9.102) from network |
+| P0 | Block all 4 attacker IPs at perimeter firewall |
+| P1 | Block outbound port 447/tcp — Trickbot C2 evasion port |
+| P1 | Search all proxy logs for /tar2/ URI pattern — check for other infected hosts |
+| P1 | Search all proxy logs for GET requests to icanhazip.com from internal hosts |
+| P2 | Enforce no-save policy for browser passwords via Group Policy |
+| P2 | Deploy SSL/TLS inspection at proxy layer — would have caught HTTP on port 443 |
+| P3 | Deploy detection rules 006–010 to SIEM for ongoing Trickbot monitoring |
+
+---
+
+## 15. References
 - Exercise: https://malware-traffic-analysis.net/2020/11/09/index.html
 - MITRE ATT&CK Trickbot: https://attack.mitre.org/software/S0266/
 - Trickbot analysis: https://malpedia.caad.fkie.fraunhofer.de/details/win.trickbot
 
 ---
 *Report generated as part of SOC Analyst / DFIR portfolio development.*
-
 *Analyst: Himanshu Kumar Modi | [LinkedIn Profile](https://www.linkedin.com/in/himanshu-kumar-modi-063b88239/)*

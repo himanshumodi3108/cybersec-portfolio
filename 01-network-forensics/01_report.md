@@ -213,7 +213,43 @@ index=network http.request.method=GET
 
 ---
 
-## 11. References
+## 11. Attack Narrative
+
+The victim machine was likely compromised through a malicious Excel document delivered via phishing email — a delivery method consistent with Ursnif campaigns throughout 2020. Upon opening, the embedded VBA macro executed silently without user awareness, establishing the first external connection before the victim saw any visible change.
+
+The attacker used a multi-stage architecture deliberately — each stage uses separate infrastructure, making it harder to take down the entire campaign by blocking a single server. The `.avi` file extension for DLL payloads was chosen specifically to bypass content-type filtering that blocks `.exe` and `.dll` downloads. Once assembled, the malware established a persistent C2 channel beaconing every 5–10 minutes — designed to look like normal background HTTPS traffic to any analyst not measuring connection regularity.
+
+This is a textbook Ursnif campaign: sophisticated delivery, layered infrastructure, deliberate evasion, and persistent access as the end goal.
+
+---
+
+## 12. Impact Assessment
+
+| Impact Category | Detail |
+|---|---|
+| Confidentiality | High — attacker has persistent encrypted channel to victim machine |
+| Integrity | High — DLL injection likely modified running processes |
+| Availability | Medium — system operational but compromised |
+| Financial risk | High — Ursnif is a banking trojan targeting financial credentials |
+| Lateral movement risk | High — compromised host can be used to pivot to internal network |
+
+---
+
+## 13. Recommended Actions
+
+| Priority | Action |
+|---|---|
+| P0 | Isolate 10.2.24.101 from network immediately |
+| P0 | Block all 4 attacker IPs and 3 domains at perimeter |
+| P1 | Scan all endpoints for .avi GET requests in proxy logs (past 30 days) |
+| P1 | Check for registry persistence keys on affected host |
+| P2 | Review all Excel macro execution events (Event ID 4688) across environment |
+| P2 | Re-image affected machine after forensic acquisition |
+| P3 | Deploy detection rules 001–005 to SIEM for ongoing monitoring |
+
+---
+
+## 14. References
 
 - Exercise: https://malware-traffic-analysis.net/2020/02/24/index.html
 - MITRE ATT&CK: https://attack.mitre.org
