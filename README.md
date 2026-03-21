@@ -3,7 +3,7 @@
 > Hands-on cybersecurity portfolio built from real malware investigations, live credential theft analysis, and SIEM detection engineering. Updated weekly.
 
 **Himanshu Kumar Modi**
-📍 Mumbai, India | 🔗 [LinkedIn Profile](www.linkedin.com/in/himanshu-kumar-modi-063b88239) | 💻 [GitHub Profile](https://github.com/himanshumodi3108)
+📍 Mumbai, India | 🔗 [LinkedIn Profile](https://www.linkedin.com/in/himanshu-kumar-modi-063b88239) | 💻 [GitHub Profile](https://github.com/himanshumodi3108)
 
 ---
 
