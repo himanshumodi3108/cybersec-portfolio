@@ -44,6 +44,11 @@ Analyzed a real Ursnif/Gozi banking trojan PCAP. Reconstructed full infection ch
 Analyzed Trickbot infostealer PCAP. Caught live credential exfiltration — 5 compromised accounts (Google, Facebook, Yahoo) in plaintext POST body. Identified non-standard port 447 C2 evasion, fake IE7 User-Agent, and bot ID fingerprinting. Wrote 5 detection rules including zero-false-positive User-Agent signature.
 → [report.md](02-network-forensics-trickbot/02_report.md)
 
+### 03 — THM: Carnage Room (Emotet + Cobalt Strike)
+**Status:** ✅ Complete
+Analyzed network traffic to investigate a malware infection involving file download, C2 communication, and data exfiltration.
+→ [report.md](03-thm-carnage/05_report.md)
+
 ---
 
 ## 💼 Portfolio Highlights
@@ -104,7 +109,7 @@ A growing collection of Splunk SPL detection rules built from real lab investiga
 
 | Week | Rules Added | Source |
 |---|---|---|
-| Week 1 | 10 rules | Ursnif PCAP (5) + Trickbot PCAP (5) — beaconing, credential exfil, port evasion, User-Agent masquerade |
+| Week 1 | 15 rules | Ursnif PCAP (5) + Trickbot PCAP (5) — beaconing, credential exfil, port evasion, User-Agent masquerade + THM: Carnage (5)|
 
 ---
 
@@ -112,7 +117,7 @@ A growing collection of Splunk SPL detection rules built from real lab investiga
 
 | Week | Focus | Status |
 |---|---|---|
-| Week 1 | Wireshark — Analyst-level PCAP investigation | ✅ Complete — 2 PCAPs, 10 IOCs, 10 detection rules |
+| Week 1 | Wireshark — Analyst-level PCAP investigation | ✅ Complete — 3 PCAPs, 10 IOCs, 15 detection rules |
 | Week 2 | Splunk SPL + BOTS v1 start | 🔜 Starts Day 8 |
 | Week 3 | BOTS v1 finish + Windows Forensics | 🔜 Upcoming |
 | Week 4 | Memory Forensics — Volatility 3 | 🔜 Upcoming |

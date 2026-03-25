@@ -34,7 +34,7 @@ index=network http.user_agent="*MSIE 7.0*" http.user_agent="*Windows NT 10.0*"
 ---
 
 ## Query 4 — Public IP lookup by internal host (T1016)
-**Observed:** GET icanhazip.com — Trickbot checking victim public IP
+**Observed:** GET api.ipify.org — Trickbot checking victim public IP
 ```spl
 index=network http.request.method=GET
   (http.host="icanhazip.com" OR http.host="api.ipify.org"

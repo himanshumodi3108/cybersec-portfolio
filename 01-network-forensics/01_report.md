@@ -70,7 +70,7 @@ A Windows host (10.2.24.101) was compromised via a malicious Excel document cont
 | Type | Value | Role | Notes |
 |---|---|---|---|
 | IP | 217.138.205.170 | Initial C2 / payload retrieval | TLS SNI: fatturapagamentodi.pw — Packet 10 |
-| IP | 46.102.153.16 | Payload server | HTTP GETs for .avi files — Packets 218–1116 (906 packets) |
+| IP | 46.102.153.16 | Payload server | HTTP GETs for .avi files — Packets 218–1116 (10 packets) |
 | IP | 37.10.71.149 | Secondary payload server | HTTP GET /grabb32.rar + /grabb64.rar |
 | IP | 68.168.123.78 | Primary C2 server | TLS beaconing — Packets 1215, 1230, 1247, 1271, 1284, 1933–2167 |
 | Domain | fatturapagamentodi.pw | Stage 2 C2 | First contact post-macro execution |

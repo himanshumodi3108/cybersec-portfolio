@@ -12,7 +12,7 @@
 | IP | 167.86.123.83 | High | Secondary C2 — HTTPS port 447 — 1484 packets — non-standard port |
 | IP | 51.81.112.135 | High | Exfiltration server — HTTP POST /tar2/ — credentials + PII |
 | IP | 156.96.128.237 | High | Additional exfiltration — POST /tar2/.../90/ |
-| Domain | icanhazip.com | Medium | Public IP check — legitimate site abused by Trickbot |
+| Domain | api.ipify.org | Medium | Public IP check — legitimate site abused by Trickbot |
 | URI | /tar2/[BOTID]/81/ | High | Chrome password exfiltration module |
 | URI | /tar2/[BOTID]/83/ | High | Form data + billing info module |
 | URI | /tar2/[BOTID]/90/ | High | Additional data module |
@@ -52,7 +52,7 @@
 447/tcp outbound (Trickbot non-standard C2 port)
 
 # Block at DNS
-icanhazip.com (if policy allows — frequently abused by malware)
+api.ipify.org (if policy allows — frequently abused by malware)
 
 # Hunt in proxy logs — URI pattern
 /tar2/

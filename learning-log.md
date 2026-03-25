@@ -15,6 +15,16 @@
 - Detected port 447 non-standard C2 channel (T1571)
 - Wrote 5 Splunk SPL detection rules including zero-false-positive User-Agent signature
 
+### Day 5 — THM: Carnage Room (Emotet + Cobalt Strike)
+- Completed: TryHackMe Carnage guided PCAP investigation
+- New technique: TLS SNI hunting with tls.handshake.type==1 + time bounding
+- New technique: Hex inspection for embedded zip content
+- New technique: Cobalt Strike Host header masquerading detection
+- New technique: SMTP forensics using frame contains "MAIL FROM"
+- Pattern confirmed: api.ipify.org IP check seen in both Trickbot (Day 2) and Emotet (Day 5)
+- Detection library: now 15 rules across 3 investigations
+- New IOCs: 13 — domains, IPs, files, email addresses
+
 ### Key Concepts Learned This Week
 - Beaconing detection via connection regularity analysis
 - TLS SNI field reveals C2 domains without decryption

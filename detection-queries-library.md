@@ -21,6 +21,11 @@ This file is updated after every lab session. Each rule includes the attack cont
 | 8 | Impossible User-Agent combination (IE7 + Win10) | T1036 | Day 2 — Trickbot PCAP |
 | 9 | Public IP lookup by internal host | T1016 | Day 2 — Trickbot PCAP |
 | 10 | Large credential POST to external IP | T1555.003, T1041 | Day 2 — Trickbot PCAP |
+| 11 | Cobalt Strike Host Header Masquerading | T1036 | Day 5 — Carnage Room |
+| 12 | TLS to suspicious TLD | T1573.001 | Day 5 — Carnage Room |
+| 13 | Malspam campaign from internal host | T1071.003 | Day 5 — Carnage Room |
+| 14 | Malicious Office document download | T1566.001, T1105 | Day 5 — Carnage Room |
+| 15 | IP check service lookup (cross-family) | T1016 | Day 5 — Carnage Room |
 
 ---
 
@@ -173,7 +178,7 @@ index=network http.user_agent="*MSIE 7.0*" http.user_agent="*Windows NT 10.0*"
 ### Rule 009 — Public IP Lookup by Internal Host
 **Source:** Day 2 — Trickbot infection PCAP (2020-11-09)
 **MITRE:** T1016
-**What triggered it:** GET icanhazip.com — Trickbot checking victim's public IP post-infection.
+**What triggered it:** GET api.ipify.org — Trickbot checking victim's public IP post-infection.
 
 ```spl
 index=network http.request.method=GET
@@ -205,3 +210,97 @@ index=network http.request.method=POST
 **Logic:** Flags large HTTP POST bodies to external IPs. Credential exfiltration posts are typically 200–2000 bytes. Combine with URI pattern matching (Rule 006) for maximum confidence.
 
 ---
+
+## Rules from Day 5 — Carnage Room (Emotet + Cobalt Strike) — 2026-03-24
+
+---
+
+### Rule 011 — Cobalt Strike Host Header Masquerading
+**Source:** Day 5 — THM Carnage Room
+**MITRE:** T1036
+**What triggered it:** Host header set to `oscp.verisign.com` while actual dest was 185.106.96.158 (confirmed Cobalt Strike C2).
+
+```spl
+index=network http.request.method=GET
+| where http.host LIKE "%.verisign.com"
+    OR http.host LIKE "%.microsoft.com"
+    OR http.host LIKE "%.windowsupdate.com"
+    OR http.host LIKE "%.akamai.com"
+| eval dest_internal=if(match(dest_ip,"^(10\.|192\.168\.)"),1,0)
+| where dest_internal=0
+| stats count by src_ip, dest_ip, http.host
+```
+
+**Logic:** Flags HTTP requests where the Host header claims a trusted domain but the destination IP is external. A mismatch between Host domain and actual IP = Cobalt Strike malleable C2 masquerading.
+
+---
+
+### Rule 012 — TLS to Suspicious TLD (T1573.001)
+**Source:** Day 5 — THM Carnage Room
+**MITRE:** T1573.001
+**What triggered it:** TLS Client Hello to survmeter.live and securitybusinpuff.com — both .live TLD.
+
+```spl
+index=network ssl.handshake.type=1
+| eval tld=mvindex(split(ssl.handshake.extensions_server_name,"."), -1)
+| where tld IN ("live","xyz","top","pw","online","site","club","icu")
+| stats count by src_ip, ssl.handshake.extensions_server_name, dest_ip
+| sort -count
+```
+
+**Logic:** Attacker-registered C2 domains frequently use cheap TLDs. Surfacing all TLS connections to these TLDs gives analysts a shortlist to check against threat intel.
+
+---
+
+### Rule 013 — Malspam Campaign from Internal Host (T1071.003)
+**Source:** Day 5 — THM Carnage Room
+**MITRE:** T1071.003
+**What triggered it:** 1,439 SMTP packets from infected host — Emotet malspam behavior.
+
+```spl
+index=network sourcetype=stream:smtp
+| stats count as smtp_count by src_ip
+| where smtp_count > 50
+| join src_ip [search index=network http.request.method=POST
+    | stats count by src_ip]
+| table src_ip, smtp_count, count
+```
+
+**Logic:** Internal host sending 50+ SMTP messages AND making external HTTP POSTs = Emotet malspam + C2 pattern. Either indicator alone could be noise — both together is high confidence.
+
+---
+
+### Rule 014 — Malicious Office Document Download (T1566.001 + T1105)
+**Source:** Day 5 — THM Carnage Room
+**MITRE:** T1566.001, T1105
+**What triggered it:** documents.zip containing chart-1530076591.xls — epoch timestamp filename is a known Emotet indicator.
+
+```spl
+index=network http.request.method=GET
+  (uri="*.zip" OR uri="*.xls" OR uri="*.xlsm" OR uri="*.doc" OR uri="*.docm")
+| eval dest_internal=if(match(dest_ip,"^(10\.|192\.168\.)"),1,0)
+| where dest_internal=0
+| eval suspicious_name=if(match(uri,"(\d{10}|\d{13}|invoice|payment|document|chart)"),1,0)
+| where suspicious_name=1
+| stats count by src_ip, dest_ip, uri
+```
+
+**Logic:** Office documents with epoch timestamp filenames (10-13 digit numbers) downloaded from external IPs are a strong Emotet indicator. Combine with source IP reputation for higher confidence.
+
+---
+
+### Rule 015 — IP Check Service Lookup (Cross-Family Confirmation)
+**Source:** Day 5 — THM Carnage Room (confirmed pattern from Day 2 Trickbot)
+**MITRE:** T1016
+**What triggered it:** GET api.ipify.org at 17:00:04 UTC — identical to Trickbot Day 2 pattern.
+
+```spl
+index=network http.request.method=GET
+  (http.host="api.ipify.org" OR http.host="icanhazip.com"
+   OR http.host="checkip.amazonaws.com" OR http.host="ifconfig.me"
+   OR http.host="ipinfo.io" OR http.host="wtfismyip.com")
+| stats count by src_ip, http.host, _time
+| sort _time
+```
+
+**Logic:** Confirmed cross-family pattern — seen in both Trickbot (Day 2) and Emotet+Cobalt Strike (Day 5). Any internal host querying a public IP-check service is worth investigating regardless of malware family.

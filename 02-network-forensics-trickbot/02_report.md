@@ -38,7 +38,7 @@ A Windows host (`DESKTOP-CANDLES`, 10.11.9.102) was compromised by **Trickbot**,
 
 ```
 [Stage 1]  Pkt #21   · 21:30:01 UTC · rel: 1.144s
-           GET / HTTP/1.1 → 184.73.247.141 (icanhazip.com)
+           GET / HTTP/1.1 → 184.73.247.141 (api.ipify.org)
            WHY SUSPICIOUS: no user action triggers an IP-check service;
            only malware does this automatically post-infection
            Pkt #23 · 21:30:01 UTC → 200 OK, public IP returned
@@ -98,7 +98,7 @@ A Windows host (`DESKTOP-CANDLES`, 10.11.9.102) was compromised by **Trickbot**,
 | 66.85.183.5 | 462 | 443 | HTTPS | Medium volume | Bare IP, no domain — legitimate services use domain names |
 | 51.81.112.135 | — | 443 | HTTP (plain) | 2,222 bytes across 4 POSTs (pkts 1592,1753,2109,2138) | Port 443 but NOT TLS — attacker mimics HTTPS port, sends unencrypted POST |
 | 156.96.128.237 | — | 443 | HTTP | Module 90 data | Same exfil pattern — secondary collection endpoint |
-| icanhazip.com | — | 80 | HTTP GET | Minimal | Legitimate site abused — no user manually browses an IP-check service |
+| api.ipify.org | — | 80 | HTTP GET | Minimal | Legitimate site abused — no user manually browses an IP-check service |
 
 > **Data Volume Insight (packet-precise):** 167.86.123.83:447 had the highest packet count (1,484) — primary C2 channel. The exfiltration server 51.81.112.135:443 received 2,222 bytes across 4 POST requests. 156.96.128.237 received 120 bytes (module 90). Total confirmed exfiltrated: **2,342 bytes across 5 POST requests, all acknowledged with HTTP 200 OK**. The complete exfiltration window was **96.3 seconds** — Pkt #1592 at 21:33:44 to Pkt #2141 at 21:35:20 UTC.
 
@@ -157,7 +157,7 @@ POST /tar2/DESKTOP-CANDLES_W10019042.1C550D7482EBE49086FC1A7D2100C9E5/81/
 | IP | 167.86.123.83 | High | Secondary C2 — HTTPS:447 — 1484 packets — non-standard port |
 | IP | 51.81.112.135 | High | Exfiltration server — HTTP POST /tar2/ — passwords + PII |
 | IP | 156.96.128.237 | High | Additional exfiltration endpoint — POST /tar2/.../90/ |
-| Domain | icanhazip.com | Medium | Public IP check — Trickbot recon (legitimate site abused) |
+| Domain | api.ipify.org | Medium | Public IP check — Trickbot recon (legitimate site abused) |
 | URI pattern | /tar2/[HOSTNAME]_[ID]/[module]/ | High | Trickbot exfiltration URI — unique bot routing |
 | Port | 447 outbound | High | Non-standard HTTPS port — Trickbot C2 evasion |
 
@@ -191,7 +191,7 @@ POST /tar2/DESKTOP-CANDLES_W10019042.1C550D7482EBE49086FC1A7D2100C9E5/81/
 | T1041 | Exfiltration Over C2 Channel | Credentials and PII sent via POST /tar2/ |
 | T1555.003 | Credentials from Web Browsers | Chrome saved passwords harvested and exfiltrated |
 | T1082 | System Information Discovery | Bot ID includes OS build (W10019042) and hardware fingerprint |
-| T1016 | System Network Configuration Discovery | GET icanhazip.com — public IP lookup |
+| T1016 | System Network Configuration Discovery | GET api.ipify.org — public IP lookup |
 | T1571 | Non-Standard Port | C2 on port 447 — evades port-443-only firewall rules |
 | T1036 | Masquerading | User-Agent spoofs IE7 on Windows 10 — impossible combination |
 
@@ -236,7 +236,7 @@ index=network http.user_agent="*MSIE 7.0*" http.user_agent="*Windows NT 10.0*"
 ### Detection 4 — Public IP lookup by internal host (T1016)
 ```spl
 index=network http.request.method=GET
-  (http.host="icanhazip.com" OR http.host="checkip.amazonaws.com"
+  (http.host="api.ipify.org" OR http.host="checkip.amazonaws.com"
    OR http.host="api.ipify.org" OR http.host="ifconfig.me")
 | stats count by src_ip, http.host
 | where count > 2
@@ -269,7 +269,7 @@ index=network http.request.method=POST
 | Evasion technique | .avi extension for DLL files | Fake IE7 User-Agent + non-standard port 447 |
 | Data theft | Not observed | Plaintext credentials + PII via HTTP POST |
 | Bot identification | Domain-based C2 SNI | Unique bot ID embedded in POST URI |
-| Recon behavior | None observed | Public IP check via icanhazip.com |
+| Recon behavior | None observed | Public IP check via api.ipify.org |
 | Severity | High | Critical — active credential theft confirmed |
 
 > **Key insight:** Trickbot is significantly more dangerous than Ursnif in this capture because the exfiltration was caught in plaintext — the POST to port 443 was HTTP, not HTTPS, meaning the stolen credentials transmitted unencrypted. This is a deliberate attacker choice: using port 443 to blend with HTTPS traffic while keeping the payload unencrypted for easier C2 processing.
@@ -285,7 +285,7 @@ index=network http.request.method=POST
 | P1 — Immediate | Isolate DESKTOP-CANDLES (10.11.9.102) from network |
 | P1 — Immediate | Block 4 attacker IPs at perimeter firewall |
 | P1 — Immediate | Block outbound port 447 at firewall — Trickbot C2 evasion port |
-| P2 — Same day | Search all proxy logs for GET requests to icanhazip.com from other internal hosts |
+| P2 — Same day | Search all proxy logs for GET requests to api.ipify.org from other internal hosts |
 | P2 — Same day | Hunt for /tar2/ URI pattern in all web proxy logs for past 30 days |
 | P2 — Same day | Check if DESKTOP-CANDLES has domain credentials — Trickbot spreads laterally |
 | P3 — This week | Scan all endpoints for the Trickbot bot ID pattern in network logs |
@@ -311,7 +311,7 @@ index=network http.request.method=POST
 
 The victim DESKTOP-CANDLES was compromised by Trickbot — one of the most prolific banking trojans and infostealers ever documented in production SOC environments. The infection method was not captured in this PCAP (the machine was already compromised), but Trickbot is overwhelmingly distributed via phishing emails containing malicious Word or Excel attachments.
 
-Once installed, Trickbot immediately began working methodically. First, it checked its own public IP via `icanhazip.com` — confirming internet connectivity and ruling out sandbox environments which often have unusual IP ranges. It then established encrypted C2 channels to two separate servers, deliberately using port 447 on the secondary channel to evade firewalls configured to inspect only port 443.
+Once installed, Trickbot immediately began working methodically. First, it checked its own public IP via `api.ipify.org` — confirming internet connectivity and ruling out sandbox environments which often have unusual IP ranges. It then established encrypted C2 channels to two separate servers, deliberately using port 447 on the secondary channel to evade firewalls configured to inspect only port 443.
 
 The credential harvesting phase was efficient and complete: within 96 seconds, Trickbot extracted every saved password from Chrome, collected form data and PII, and transmitted everything to the attacker's server across 5 confirmed POST requests — each acknowledged with HTTP 200 OK. The attacker used port 443 for exfiltration but deliberately sent plain HTTP (not HTTPS), keeping the stolen data unencrypted for easier server-side parsing while exploiting the port number to evade detection.
 
@@ -342,7 +342,7 @@ By the time this PCAP was captured, the attacker had full access to 5 accounts a
 | P0 | Block all 4 attacker IPs at perimeter firewall |
 | P1 | Block outbound port 447/tcp — Trickbot C2 evasion port |
 | P1 | Search all proxy logs for /tar2/ URI pattern — check for other infected hosts |
-| P1 | Search all proxy logs for GET requests to icanhazip.com from internal hosts |
+| P1 | Search all proxy logs for GET requests to api.ipify.org from internal hosts |
 | P2 | Enforce no-save policy for browser passwords via Group Policy |
 | P2 | Deploy SSL/TLS inspection at proxy layer — would have caught HTTP on port 443 |
 | P3 | Deploy detection rules 006–010 to SIEM for ongoing Trickbot monitoring |
