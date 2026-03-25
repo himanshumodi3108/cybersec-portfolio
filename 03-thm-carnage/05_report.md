@@ -254,7 +254,7 @@ Post-infection activity included:
 ## Initial Infection
 
 - First HTTP connection: **2021-09-24 16:44:38**
-- Malicious domain: `attirenepal[.]com`
+- Malicious domain: `attirenepal.com`
 - Downloaded file: `documents.zip`
 - File inside archive: `chart-1530076591.xls`
 
@@ -263,29 +263,29 @@ Post-infection activity included:
 ## Malicious Infrastructure
 
 ### Domains:
-- attirenepal[.]com
-- finejewels[.]com[.]au
-- thietbiagt[.]com
-- new[.]americold[.]com
-- maldivehost[.]net
-- survmeter[.]live
-- securitybusinpuff[.]com
+- attirenepal.com
+- finejewels.com.au
+- thietbiagt.com
+- new.americold.com
+- maldivehost.net
+- survmeter.live
+- securitybusinpuff.com
 
 ---
 
 ### Cobalt Strike C2 Servers:
-- 185[.]106[.]96[.]158
-- 185[.]125[.]204[.]174
+- 185.106.96.158
+- 185.125.204.174
 
 Host header observed:
-- oscp[.]verisign[.]com
+- oscp.verisign.com
 
 ---
 
 ## Post-Infection Activity
 
 - Data exfiltration via HTTP POST requests
-- Domain used: `maldivehost[.]net`
+- Domain used: `maldivehost.net`
 - Sample exfiltrated data: `zLIisQRWZI`
 - Packet length: 281 bytes
 
@@ -301,7 +301,7 @@ Host header observed:
 
 ## DNS Activity
 
-- IP check domain: `api.ipify[.]org`
+- IP check domain: `api.ipify.org`
 - Timestamp: **2021-09-24 17:00:04**
 
 ---
@@ -309,7 +309,7 @@ Host header observed:
 ## Malspam Activity
 
 - First MAIL FROM address:
-  - farshin@mailfa[.]com
+  - farshin@mailfa.com
 - Total SMTP packets: 1439
 
 ---
