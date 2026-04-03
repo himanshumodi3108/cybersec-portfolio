@@ -49,15 +49,20 @@ Analyzed Trickbot infostealer PCAP. Caught live credential exfiltration — 5 co
 Analyzed network traffic to investigate a malware infection involving file download, C2 communication, and data exfiltration.
 → [report.md](03-thm-carnage/05_report.md)
 
+### 04 — Network Forensics: BazarLoader (TA551) Malware Investigation
+**Status:** ✅ Complete  
+Analyzed BazarLoader infection PCAP from TA551 (Shathak) campaign. Identified HTTP-based DLL payload delivery using `/bmdff/` URI pattern and extracted SHA256 hash. Correlated traffic with sandbox analysis (ANY.RUN, Tria.ge) and confirmed infection chain: malspam → macro execution → DLL download → HTTPS C2 beaconing. Extracted victim profile, 3+ IOCs, and mapped activity to MITRE ATT&CK techniques.  
+→ [report.md](04-network-forensics-bazarloader/06_report.md)
+
 ---
 
 ## 💼 Portfolio Highlights
 
 - Investigated real-world malware PCAPs and reconstructed full infection chains
 - Detected live credential exfiltration via HTTP POST stream analysis (Trickbot)
-- Extracted and documented IOCs across 2 malware families — 10 total indicators
+- Extracted and documented IOCs across 2 malware families — 20 total indicators
 - Mapped attacker behavior to MITRE ATT&CK framework across 9 technique IDs
-- Wrote 10 Splunk SPL detection rules from observed malware behaviors
+- Wrote 20 Splunk SPL detection rules from observed malware behaviors
 - Identified evasion techniques: payload disguise, non-standard ports, User-Agent spoofing
 
 ---
@@ -109,7 +114,7 @@ A growing collection of Splunk SPL detection rules built from real lab investiga
 
 | Week | Rules Added | Source |
 |---|---|---|
-| Week 1 | 15 rules | Ursnif PCAP (5) + Trickbot PCAP (5) — beaconing, credential exfil, port evasion, User-Agent masquerade + THM: Carnage (5)|
+| Week 1 | 20 rules | Ursnif PCAP (5) + Trickbot PCAP (5) — beaconing, credential exfil, port evasion, User-Agent masquerade + THM: Carnage (5) + Bazarloader PCAP(5)|
 
 ---
 
@@ -117,7 +122,7 @@ A growing collection of Splunk SPL detection rules built from real lab investiga
 
 | Week | Focus | Status |
 |---|---|---|
-| Week 1 | Wireshark — Analyst-level PCAP investigation | ✅ Complete — 3 PCAPs, 10 IOCs, 15 detection rules |
+| Week 1 | Wireshark — Analyst-level PCAP investigation | ✅ Complete — 4 PCAPs, 10 IOCs, 20 detection rules |
 | Week 2 | Splunk SPL + BOTS v1 start | 🔜 Starts Day 8 |
 | Week 3 | BOTS v1 finish + Windows Forensics | 🔜 Upcoming |
 | Week 4 | Memory Forensics — Volatility 3 | 🔜 Upcoming |

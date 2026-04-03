@@ -1,7 +1,7 @@
 # Detection Queries Library
 **Analyst:** Himanshu Kumar Modi
-**Last Updated:** 2025-03-21
-**Total Rules:** 10
+**Last Updated:** 2026-04-03
+**Total Rules:** 20
 
 This file is updated after every lab session. Each rule includes the attack context, MITRE technique, SPL query, and the logic behind it.
 
@@ -26,6 +26,11 @@ This file is updated after every lab session. Each rule includes the attack cont
 | 13 | Malspam campaign from internal host | T1071.003 | Day 5 — Carnage Room |
 | 14 | Malicious Office document download | T1566.001, T1105 | Day 5 — Carnage Room |
 | 15 | IP check service lookup (cross-family) | T1016 | Day 5 — Carnage Room |
+| 16 | TLS Connection to Suspicious SNI | T1071.003, T1573.001 | Day 6 — Bazarloader PCAP |
+| 17 | C2 Beaconing via Regular TLS Intervals | T1071.003 | Day 6 — Bazarloader PCAP |
+| 18 | Media File Extension Used for Payload Delivery | T1105, T1027 | Day 6 — Bazarloader PCAP |
+| 19 | Multiple File Downloads from Single External IP | T1105 | Day 6 — Bazarloader PCAP |
+| 20 | Suspicious Archive Download by Name Pattern | T1027 | Day 6 — Bazarloader PCAP |
 
 ---
 
@@ -304,3 +309,89 @@ index=network http.request.method=GET
 ```
 
 **Logic:** Confirmed cross-family pattern — seen in both Trickbot (Day 2) and Emotet+Cobalt Strike (Day 5). Any internal host querying a public IP-check service is worth investigating regardless of malware family.
+
+---
+ 
+## Rules from Day 6 — BazarLoader via TA551 (2021-09-10) — 2026-03-25
+ 
+---
+ 
+### Rule 016 — TA551 /bmdff/ Campaign URI Pattern
+**Source:** Day 6 — BazarLoader / TA551
+**MITRE:** T1105
+**What triggered it:** GET /bmdff/BhoHsCtZ/.../date1?BNLv65=pAAS to simpsonsavingss.com
+ 
+```spl
+index=network http.request.method=GET uri="*/bmdff/*"
+| stats count by src_ip, dest_ip, uri, http.host
+```
+**Logic:** `/bmdff/` is a confirmed TA551 campaign URI signature. Any match is high-confidence TA551 activity — no tuning required.
+ 
+---
+ 
+### Rule 017 — DLL Download via HTTP with Date-Pattern URL
+**Source:** Day 6 — BazarLoader / TA551
+**MITRE:** T1105
+**What triggered it:** DLL retrieved via URL ending in `date1?` — TA551 naming convention.
+ 
+```spl
+index=network http.request.method=GET
+| eval is_dll=if(match(uri,"\.dll$") OR match(uri,"date[0-9]+"),1,0)
+| where is_dll=1
+| eval dest_internal=if(match(dest_ip,"^(10\.|192\.168\.)"),1,0)
+| where dest_internal=0
+| stats count by src_ip, dest_ip, uri, http.host
+```
+**Logic:** DLL downloads from external IPs via HTTP are almost always malicious. Date-pattern URLs (`date1`, `date2`) are TA551-specific naming. Near-zero false positives.
+ 
+---
+ 
+### Rule 018 — Password-Protected Zip from External Email
+**Source:** Day 6 — BazarLoader / TA551
+**MITRE:** T1027, T1566.001
+**What triggered it:** TA551 delivers payload in password-protected zip to evade email gateway scanning.
+ 
+```spl
+index=email attachment_name="*.zip"
+| eval suspicious=if(match(subject,"(invoice|document|payment|report|scan|urgent)"),1,0)
+| where suspicious=1
+| stats count by sender, recipient, subject, attachment_name
+```
+**Logic:** Password-protected zips with business-themed subjects from external senders are a primary TA551 delivery vector. Email gateway detection catches this before user opens anything.
+ 
+---
+ 
+### Rule 019 — BazarLoader C2 Beaconing Detection
+**Source:** Day 6 — BazarLoader / TA551
+**MITRE:** T1573.001, T1041
+**What triggered it:** HTTPS beaconing to 167.172.37.9 and 94.158.245.52 port 443.
+ 
+```spl
+index=network ssl.handshake.type=1
+| bucket _time span=5m
+| stats count by src_ip, dest_ip, _time
+| streamstats window=6 current=t stdev(count) as regularity by src_ip, dest_ip
+| where regularity < 2
+| lookup threat_intel_ips dest_ip OUTPUT threat_actor
+| where isnotnull(threat_actor)
+```
+**Logic:** Combines behavioral beaconing detection (low standard deviation = machine regularity) with threat intel IP lookup for confirmed C2 infrastructure.
+ 
+---
+ 
+### Rule 020 — rundll32.exe Loading DLL from User-Writable Path
+**Source:** Day 6 — BazarLoader / TA551 (endpoint defense insight)
+**MITRE:** T1218.011 — System Binary Proxy Execution: Rundll32
+**What triggered it:** BazarLoader DLL executed via rundll32.exe from Downloads/Temp directory.
+ 
+```spl
+index=windows EventCode=4688
+  NewProcessName="*\\rundll32.exe"
+| eval suspicious_path=if(
+    match(CommandLine,"(Downloads|AppData|Temp|Public).*\.dll"),1,0)
+| where suspicious_path=1
+| stats count by ComputerName, SubjectUserName, CommandLine, ParentProcessName
+| sort -count
+```
+**Logic:** Legitimate rundll32.exe calls load DLLs from system directories. Loading a DLL from Downloads, AppData, or Temp via rundll32 is a strong indicator of malware execution — BazarLoader, Emotet, and similar loaders all use this pattern.
+ 
